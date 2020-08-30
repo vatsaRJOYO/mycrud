@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import com.vatsa.mycrud.exception.ResourceNotFoundException;
 import com.vatsa.mycrud.model.Stock;
 import com.vatsa.mycrud.repository.StockRepository;
+import com.vatsa.mycrud.service.StockService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,18 +27,18 @@ import org.springframework.web.bind.annotation.RestController;
 public class StockController {
     
     @Autowired
-    private StockRepository stockRepository;
+    private StockService stockServive;
     
     // get Stock
     @GetMapping("stocks")
     public List<Stock> getAllStocks(){
-        return this.stockRepository.findAll();
+        return this.stockServive.getAllStocks();
     }
 
     // get Stock ny id
     @GetMapping("/stocks/{id}")
     public ResponseEntity<Stock> getStockByID(@PathVariable(value="id") Long stockId) throws ResourceNotFoundException {
-        Stock stock = stockRepository.findById(stockId).orElseThrow(()-> new ResourceNotFoundException("Stock Not Found with ID:  " + stockId) );
+        Stock stock = stockServive.getStockByID(stockId);
 
         return ResponseEntity.ok().body(stock);
     }
@@ -45,27 +46,22 @@ public class StockController {
     // save Stock
     @PostMapping("stocks")
     public Stock createStock(@RequestBody Stock stock){
-        return this.stockRepository.save(stock);
+        return this.stockServive.createStock(stock);
 
     }
     
     // update Stock
     @PutMapping("stocks/{id}")
     public ResponseEntity<Stock> updateStock(@PathVariable(value = "id") Long stockId, @Valid @RequestBody Stock stockDetails) throws ResourceNotFoundException{
-        Stock stock = stockRepository.findById(stockId).orElseThrow(()-> new ResourceNotFoundException("Stock Not Found with ID:  " + stockId) );
-         
-        stock.setValue(stockDetails.getValue());
-
-        return ResponseEntity.ok(this.stockRepository.save(stock));
+        Stock stock = this.stockServive.updateStock(stockId, stockDetails);
+        return ResponseEntity.ok(stock);
 
     }
     
     // delete Stock 
     @DeleteMapping("stocks/{id}")
     public Map<String, Boolean> deleteStock(@PathVariable(value = "id") Long stockId ) throws ResourceNotFoundException{
-        Stock stock = stockRepository.findById(stockId).orElseThrow(()-> new ResourceNotFoundException("Stock Not Found with ID:  " + stockId) );
-
-        this.stockRepository.delete(stock);
+        this.stockServive.deleteStock(stockId);
         Map <String, Boolean> response = new HashMap<>();
         response.put("Deleted", true);
         return response;
