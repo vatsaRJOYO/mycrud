@@ -1,5 +1,7 @@
 package com.vatsa.mycrud.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,8 +11,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="stocks")
-public class Stock {
-    
+public class Stock implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;

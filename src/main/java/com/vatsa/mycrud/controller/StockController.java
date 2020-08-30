@@ -8,10 +8,12 @@ import javax.validation.Valid;
 
 import com.vatsa.mycrud.exception.ResourceNotFoundException;
 import com.vatsa.mycrud.model.Stock;
-import com.vatsa.mycrud.repository.StockRepository;
 import com.vatsa.mycrud.service.StockService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -30,17 +33,22 @@ public class StockController {
     private StockService stockServive;
     
     // get Stock
+    @Cacheable(value = "stocks")
     @GetMapping("stocks")
     public List<Stock> getAllStocks(){
         return this.stockServive.getAllStocks();
     }
 
-    // get Stock ny id
+    // get Stock by id
+    @Cacheable(value = "stocks", key = "#root.args[0]")
     @GetMapping("/stocks/{id}")
-    public ResponseEntity<Stock> getStockByID(@PathVariable(value="id") Long stockId) throws ResourceNotFoundException {
+    @ResponseBody
+    public Stock getStockByID(@PathVariable(value="id") Long stockId) throws ResourceNotFoundException { //ResponseEntity<Stock> 
         Stock stock = stockServive.getStockByID(stockId);
+        System.out.println("getting");
+        return stock;
 
-        return ResponseEntity.ok().body(stock);
+        // return ResponseEntity.ok().body(stock);
     }
 
     // save Stock
@@ -51,15 +59,19 @@ public class StockController {
     }
     
     // update Stock
+    @CachePut(value = "stocks", key = "#root.args[0]")
     @PutMapping("stocks/{id}")
-    public ResponseEntity<Stock> updateStock(@PathVariable(value = "id") Long stockId, @Valid @RequestBody Stock stockDetails) throws ResourceNotFoundException{
+    @ResponseBody
+    public Stock updateStock(@PathVariable(value = "id") Long stockId, @Valid @RequestBody Stock stockDetails) throws ResourceNotFoundException{
         Stock stock = this.stockServive.updateStock(stockId, stockDetails);
-        return ResponseEntity.ok(stock);
+        return stock;//ResponseEntity.ok(stock);
 
     }
     
     // delete Stock 
+    @CacheEvict(value = "stocks", key = "#root.args[0]")
     @DeleteMapping("stocks/{id}")
+    @ResponseBody
     public Map<String, Boolean> deleteStock(@PathVariable(value = "id") Long stockId ) throws ResourceNotFoundException{
         this.stockServive.deleteStock(stockId);
         Map <String, Boolean> response = new HashMap<>();
