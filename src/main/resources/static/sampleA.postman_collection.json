@@ -1,0 +1,218 @@
+{
+	"info": {
+		"_postman_id": "a1d13bcb-f688-4a17-ae18-096a23dfe526",
+		"name": "sampleA",
+		"description": "For sample SpringBoot application",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "CreateData",
+			"item": [
+				{
+					"name": "create INFY",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ticker\": \"INFY\",\n    \"name\": \"Infosys systems\",\n    \"value\": 1234.55\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "127.0.0.1:12300/api/v1/stocks",
+						"description": "create stock object and store in DB"
+					},
+					"response": []
+				},
+				{
+					"name": "create GESHIP",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ticker\": \"GESHIP\",\n    \"name\": \"GE Shipping\",\n    \"value\": 100.00\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "127.0.0.1:12300/api/v1/stocks",
+						"description": "create stock object and store in DB"
+					},
+					"response": []
+				},
+				{
+					"name": "create ITC",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ticker\": \"ITC\",\n    \"name\": \"Indian Tobaco Company\",\n    \"value\": 405.11\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "127.0.0.1:12300/api/v1/stocks",
+						"description": "create stock object and store in DB"
+					},
+					"response": []
+				},
+				{
+					"name": "create HDFC",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ticker\": \"HDFC\",\n    \"name\": \"HDFC Bank\",\n    \"value\": 9800.76\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "127.0.0.1:12300/api/v1/stocks",
+						"description": "create stock object and store in DB"
+					},
+					"response": []
+				}
+			],
+			"description": "Collection of requests used for date creation.",
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "GetData",
+			"item": [
+				{
+					"name": "getStock 1",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "127.0.0.1:12300/api/v1/stocks/1",
+						"description": "Gets stock from the ID of the stock."
+					},
+					"response": []
+				},
+				{
+					"name": "getStock 2",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "127.0.0.1:12300/api/v1/stocks/2",
+						"description": "Gets stock from the ID of the stock."
+					},
+					"response": []
+				},
+				{
+					"name": "getStock 3",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "127.0.0.1:12300/api/v1/stocks/3",
+						"description": "Gets stock from the ID of the stock."
+					},
+					"response": []
+				},
+				{
+					"name": "getStock 5 Excep",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "127.0.0.1:12300/api/v1/stocks/5",
+						"description": "Gets stock from the ID of the stock."
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Update",
+			"item": [
+				{
+					"name": "update 2",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ticker\": \"fgsdfgs\",\n    \"name\": \"\",\n    \"value\": 1010.83\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "127.0.0.1:12300/api/v1/stocks/2"
+					},
+					"response": []
+				},
+				{
+					"name": "update 8 Exc",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ticker\": \"\",\n    \"name\": \"\",\n    \"value\": 1010.83\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "127.0.0.1:12300/api/v1/stocks/8"
+					},
+					"response": []
+				}
+			],
+			"description": "Updaet the stock values",
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Delete",
+			"item": [
+				{
+					"name": "Delete 2",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "127.0.0.1:12300/api/v1/stocks/2"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete 7",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "127.0.0.1:12300/api/v1/stocks/7"
+					},
+					"response": []
+				}
+			],
+			"description": "Delete stocks from dataase",
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "gatAllStocks",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "127.0.0.1:12300/api/v1/stocks",
+				"description": "gets list of all stocks"
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
