@@ -7,6 +7,9 @@ import com.vatsa.mycrud.model.Stock;
 import com.vatsa.mycrud.repository.StockRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,13 +18,15 @@ public class StockService {
     @Autowired
     private StockRepository stockRepository;
 
+    @Cacheable(value = "stocks", key = "#root.args[0]")
     public List<Stock> getAllStocks(){
         return this.stockRepository.findAll();
     }
 
     // get Stock ny id
-    
+    @Cacheable(value = "stocks", key = "#root.args[0]")
     public Stock getStockByID(Long stockId) throws ResourceNotFoundException {
+        System.out.println("getting");
         return stockRepository.findById(stockId).orElseThrow(()-> new ResourceNotFoundException("Stock Not Found with ID:  " + stockId) );
 
     }
@@ -33,6 +38,7 @@ public class StockService {
     }
     
     // update Stock
+    @CachePut(value = "stocks", key = "#root.args[0]")
     public Stock updateStock(Long stockId, Stock stockDetails) throws ResourceNotFoundException{
         Stock stock = stockRepository.findById(stockId).orElseThrow(()-> new ResourceNotFoundException("Stock Not Found with ID:  " + stockId) );
          
@@ -41,7 +47,7 @@ public class StockService {
     }
     
     // delete Stock 
-
+    @CacheEvict(value = "stocks", key = "#root.args[0]")
     public void deleteStock(Long stockId) throws ResourceNotFoundException{
         Stock stock = stockRepository.findById(stockId).orElseThrow(()-> new ResourceNotFoundException("Stock Not Found with ID:  " + stockId) );
 
