@@ -31,3 +31,9 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### MacOSx
+.DS_Store
+
+### Unwanted log files
+*.log

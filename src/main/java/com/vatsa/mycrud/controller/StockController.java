@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import com.vatsa.mycrud.exception.ResourceNotFoundException;
 import com.vatsa.mycrud.model.Stock;
 import com.vatsa.mycrud.service.StockService;
+import com.vatsa.mycrud.util.Utils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,21 +32,24 @@ public class StockController {
     // get Stock 
     @GetMapping("stocks")
     public List<Stock> getAllStocks(){
-        return this.stockServive.getAllStocks();
+        String logToken = Utils.getLogToken();
+        return this.stockServive.getAllStocks(logToken);
     }
 
     // get Stock by id
     @GetMapping("/stocks/{id}")
     @ResponseBody
     public Stock getStockByID(@PathVariable(value="id") Long stockId) throws ResourceNotFoundException { //ResponseEntity<Stock> 
-        Stock stock = stockServive.getStockByID(stockId);
+        String logToken = Utils.getLogToken();
+        Stock stock = stockServive.getStockByID(stockId, logToken);
         return stock;  // return ResponseEntity.ok().body(stock);
     }
 
     // save Stock
     @PostMapping("stocks")
     public Stock createStock(@RequestBody Stock stock){
-        return this.stockServive.createStock(stock);
+        String logToken = Utils.getLogToken();
+        return this.stockServive.createStock(stock, logToken);
 
     }
     
@@ -53,7 +57,8 @@ public class StockController {
     @PutMapping("stocks/{id}")
     @ResponseBody
     public Stock updateStock(@PathVariable(value = "id") Long stockId, @Valid @RequestBody Stock stockDetails) throws ResourceNotFoundException{
-        Stock stock = this.stockServive.updateStock(stockId, stockDetails);
+        String logToken = Utils.getLogToken();
+        Stock stock = this.stockServive.updateStock(stockId, stockDetails, logToken);
         return stock;  //ResponseEntity.ok(stock);
 
     }
@@ -63,7 +68,8 @@ public class StockController {
     @DeleteMapping("stocks/{id}")
     @ResponseBody
     public Map<String, Boolean> deleteStock(@PathVariable(value = "id") Long stockId ) throws ResourceNotFoundException{
-        this.stockServive.deleteStock(stockId);
+        String logToken = Utils.getLogToken();
+        this.stockServive.deleteStock(stockId, logToken);
         Map <String, Boolean> response = new HashMap<>();
         response.put("Deleted", true);
         return response;
