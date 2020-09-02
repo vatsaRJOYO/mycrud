@@ -89,6 +89,14 @@
 			</exclusions>
 		</dependency>
 	</dependencies>
+	<profiles>
+		<profile>
+			<id>staging</id>
+			<properties>
+				<activatedProperties>staging</activatedProperties>
+			</properties>
+		</profile>
+	</profiles>
 
 	<build>
 		<plugins>

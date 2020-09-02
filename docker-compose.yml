@@ -1,0 +1,59 @@
+# Docker Compose file Reference (https://docs.docker.com/compose/compose-file/)
+version: '3'
+
+#Define services
+services:
+
+  #PostgreSQL Database for the application
+  mycrud-postgres:
+    image: "postgres:9.6-alpine"
+    container_name: mycrud-postgres
+    ports:
+      - 5432:5432 # Forward the exposed port 5432 on the container to port 5432 on the host machine
+    #Environment variable for DB name, user and password
+    environment:
+      - POSTGRES_DB=sampleb
+      - POSTGRES_USER=dummyb
+      - POSTGRES_PASSWORD=oyospwdb
+    
+      #Volume mounted for database for the storage
+    volumes:
+      - mycrud-data:/var/lib/postgresql/data
+
+  #Redis Cache for the application
+  mycrud-redis:
+    image: redis:alpine
+    container_name: mycrud-redis
+    command: redis-server --port 12302
+    ports:
+      - 12302:12302
+    volumes:
+      - mycrud-cache:/data
+
+  #Back-end Spring Boot Application
+  mycrud-app:
+    #The docker file in scrum-app build the jar and provides the docker image with the following name.
+    build: .
+    container_name: mycrud-app
+
+    #Environment variables for Spring Boot Application.
+    environment:
+      - DB_SERVER=mycrud-postgres
+      - POSTGRES_DB=sampleb
+      - POSTGRES_USER=dummyb
+      - POSTGRES_PASSWORD=oyospwdb
+      - REDIS_HOST=mycrud-redis
+      - REDIS_PORT=12302
+    ports:
+      - 12300:12300 # Forward the exposed port 8080 on the container to port 8080 on the host machine
+    depends_on:
+      - mycrud-postgres
+      - mycrud-redis
+    links:
+      - mycrud-postgres
+      - mycrud-redis
+
+#Volumes for DB data
+volumes:
+  mycrud-data: 
+  mycrud-cache: 
